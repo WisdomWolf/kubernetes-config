@@ -1,0 +1,14 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: kuard-cert
+  namespace: default
+spec:
+  commonName: kuard.wiseapp.xyz
+  secretName: kuard-tls
+  dnsNames:
+    - kuard.wiseapp.xyz
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer

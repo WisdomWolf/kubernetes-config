@@ -1,0 +1,14 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: whoami-cert
+  namespace: default
+spec:
+  commonName: whoami.wiseapp.xyz
+  secretName: whoami-tls
+  dnsNames:
+    - whoami.wiseapp.xyz
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer

@@ -1,0 +1,14 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: dashboard-cert
+  namespace: traefik
+spec:
+  commonName: traefik.wiseapp.xyz
+  secretName: traefik-tls
+  dnsNames:
+    - traefik.wiseapp.xyz
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer

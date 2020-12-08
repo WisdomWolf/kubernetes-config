@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: k3s-wiseapp-xyz
+  namespace: default
+spec:
+  secretName: k3s-wiseapp-xyz-tls
+  issuerRef:
+    name: letsencrypt-staging
+    kind: ClusterIssuer
+  commonName: k3s.wiseapp.xyz
+  dnsNames:
+  - k3s.wiseapp.xyz

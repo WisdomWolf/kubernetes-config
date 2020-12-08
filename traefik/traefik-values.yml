@@ -1,0 +1,17 @@
+additionalArguments:
+  - "--accesslog=true"
+  - "--accesslog.format=json"
+  - "--log.level=DEBUG"
+  - "--metrics.prometheus=true"
+  - "--metrics.prometheus.entryPoint=metrics"
+  - "--entryPoints.metrics.address=:8082"
+  - "--entryPoints.web.http.redirections.entryPoint.to=:443"
+  - "--entryPoints.web.http.redirections.entryPoint.scheme=https"
+  - "--entryPoints.web.http.redirections.entryPoint.permanent=true"
+  - "--api.dashboard=true"
+
+deployment:
+  replicas: 1
+  podAnnotations:
+    prometheus.io/port: '8082'
+    prometheus.io/scrape: 'true'

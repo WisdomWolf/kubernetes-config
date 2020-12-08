@@ -1,0 +1,12 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: https://openfaas.wiseapp.xyz
+functions:
+  lastfm-playcount:
+    lang: python3-http-armhf
+    handler: ./lastfm-playcount
+    image: wisdomwolf/lastfm-playcount:latest
+    secrets:
+      - lastfm-api-secret
+

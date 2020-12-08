@@ -1,0 +1,31 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: openfaas-cert
+  namespace: openfaas
+spec:
+  commonName: openfaas.wiseapp.xyz
+  secretName: openfaas-tls
+  dnsNames:
+    - openfaas.wiseapp.xyz
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: openfaas-gateway-ingress
+  namespace: openfaas
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`openfaas.wiseapp.xyz`)
+      kind: Rule
+      services:
+        - name: gateway-external
+          port: 8080
+  tls:
+    secretName: openfaas-tls
