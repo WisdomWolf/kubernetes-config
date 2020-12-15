@@ -3,7 +3,7 @@ set installed_charts (helm list --all-namespaces | tail -n +2 | awk '{print $1}'
 
 ## PORTAINER
 if contains portainer $installed_charts
-    echo 'skipping portainer install'
+    echo 'portainer is already installed...skipping'
 else
     helm install -n portainer portainer portainer/portainer --set service.type=ClusterIP
 end
@@ -31,8 +31,9 @@ end
 for service_file in (ls helm_values/headless-service)
     set service_name (string split '_' $service_file)[1]
     if contains $service_name $installed_charts
-        echo "skipping install of $service_name because it is already installed"
+        echo "Skipping install of $service_name because it is already installed"
     else
+        echo "Attempting to install $service_name"
         helm install $service_name ../headless-service -f helm_values/headless-service/$service_file
     end
 end
