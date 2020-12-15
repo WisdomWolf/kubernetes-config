@@ -29,11 +29,13 @@ end
 ## MISC CHARTS
 # Also need to update install to not rely on relative path for chart reference
 for service_file in (ls helm_values/headless-service)
-    set service_name (string split '_' $service_file)[1]
-    if contains $service_name $installed_charts
-        echo "Skipping install of $service_name because it is already installed"
-    else
-        echo "Attempting to install $service_name"
-        helm install $service_name ../headless-service -f helm_values/headless-service/$service_file
+    if string match '*.yml' $service_file >> /dev/null
+        set service_name (string split '_' $service_file)[1]
+        if contains $service_name $installed_charts
+            echo "Skipping install of $service_name because it is already installed"
+        else
+            echo "Attempting to install $service_name"
+            helm install $service_name ../headless-service -f helm_values/headless-service/$service_file
+        end
     end
 end
