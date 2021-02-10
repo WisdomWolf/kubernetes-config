@@ -27,7 +27,8 @@ def handle(event, context):
         return {
             "statusCode": 400,
             "body": {
-                "error": "username is required"
+                "error": "username is required",
+                "example_request": "function/lastfm-playcount.openfaas-fn?artist=cult+to+follow&title=leave+it+all+behind&username=wisdomwolf"
             }
         }
 
@@ -41,7 +42,8 @@ def handle(event, context):
         return {
             "statusCode": 400,
             "body": {
-                "error": "either a track_url or a title and artist are required"
+                "error": "either a track_url or a title and artist are required",
+                "example_request": "/function/lastfm-playcount.openfaas-fn?artist=cult+to+follow&title=leave+it+all+behind&username=wisdomwolf"
             }
         }
 

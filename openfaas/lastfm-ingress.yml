@@ -1,0 +1,18 @@
+apiVersion: openfaas.com/v1alpha2
+kind: FunctionIngress
+metadata:
+  name: lastfm-playcount-api
+  namespace: openfaas
+spec:
+  domain: api.wiseapp.xyz
+  function: lastfm-playcount
+  ingressType: traefik
+  path: "/v1/lastfm-playcount(.*)"
+  tls:
+    enabled: true
+    issuerRef:
+      name: "letsencrypt-prod"
+      # Change to ClusterIssuer if required
+      # https://docs.cert-manager.io/en/latest/reference/clusterissuers.html
+      # https://docs.cert-manager.io/en/latest/reference/issuers.html
+      kind: "ClusterIssuer"

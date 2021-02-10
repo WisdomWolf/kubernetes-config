@@ -1,7 +1,7 @@
 additionalArguments:
   - "--accesslog=true"
   - "--accesslog.format=json"
-  - "--log.level=DEBUG"
+  - "--log.level=INFO"
   - "--metrics.prometheus=true"
   - "--metrics.prometheus.entryPoint=metrics"
   - "--entryPoints.metrics.address=:8082"

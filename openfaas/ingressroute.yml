@@ -5,10 +5,10 @@ metadata:
   name: openfaas-cert
   namespace: openfaas
 spec:
-  commonName: openfaas.wiseapp.xyz
+  commonName: functions.wiseapp.xyz
   secretName: openfaas-tls
   dnsNames:
-    - openfaas.wiseapp.xyz
+    - functions.wiseapp.xyz
   issuerRef:
     name: letsencrypt-prod
     kind: ClusterIssuer
@@ -22,7 +22,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`openfaas.wiseapp.xyz`)
+    - match: Host(`functions.wiseapp.xyz`)
       kind: Rule
       services:
         - name: gateway-external

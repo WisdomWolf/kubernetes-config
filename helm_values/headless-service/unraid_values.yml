@@ -1,5 +1,5 @@
 ---
 domainName: wiseapp.xyz
 service:
-  ipAddress: 192.168.7.18
+  ipAddress: 192.168.7.230
   port: 80
