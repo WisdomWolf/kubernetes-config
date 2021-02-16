@@ -1,9 +1,33 @@
 #!/usr/bin/env fish
+function check_date
+    set service_name $argv[1]
+    set service_file $argv[2]
+    set func_name $argv[3]
+    set modified_ts (stat -c%y $service_file)
+    set installed_ts (helm list --all-namespaces | grep $service_name | awk -F'\t' '{print $4}')
+    set result (./test_dates.py "$modified_ts" "$installed_ts")
+    if [ -n "$result" ]
+        eval $func_name
+    end
+end
+
+function install_traefik
+    echo 'installing traefik'
+    kubectl create namespace traefik
+    helm install -n traefik traefik traefik/traefik -f traefik/traefik-values.yml
+end
+
+function upgrade_traefik
+    echo 'updating/upgrading traefik'
+    helm upgrade -n traefik traefik traefik/traefik -f traefik/traefik-values.yml
+end
+
 set installed_charts (helm list --all-namespaces | tail -n +2 | awk '{print $1}')
 
 ## PORTAINER
 if contains portainer $installed_charts
     echo 'portainer is already installed...skipping'
+
 else
     echo 'intalling portainer'
     kubectl create namespace portainer
@@ -12,11 +36,10 @@ end
 
 ## TRAEFIK
 if contains traefik $installed_charts
-    echo 'traefik is already installed...skipping'
+    echo 'traefik is already installed'
+    check_date traefik traefik/traefik-values.yml upgrade_traefik
 else
-    echo 'installing traefik'
-    kubectl create namespace traefik
-    helm install -n traefik traefik traefik/traefik -f traefik/traefik-values.yml
+    install_traefik
 end
 
 ## CERT-MANAGER
@@ -30,6 +53,10 @@ else
       --version v1.1.0 \
       --set installCRDs=true \
       --set 'extraArgs={--dns01-recursive-nameservers-only,--dns01-recursive-nameservers=8.8.8.8:53\,1.1.1.1:53}'
+    kubectl apply -f cert-manager/letsencrypt-issuer-prod.yaml
+    kubectl apply -f cert-manager/letsencrypt-issuer-staging.yaml
+    echo sleeping for 30 seconds...
+    sleep 30
 end
 
 ## MISC CHARTS
@@ -51,7 +78,7 @@ for service_file in (ls helm_values/headless-service)
             end
         else
             echo "Attempting to install $service_name"
-            helm install $service_name ../headless-service -f helm_values/headless-service/$service_file
+            helm install $service_name wise-charts/headless-service -f helm_values/headless-service/$service_file
         end
     end
 end
