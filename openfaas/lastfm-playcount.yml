@@ -6,7 +6,7 @@ functions:
   lastfm-playcount:
     lang: python3-http
     handler: ./lastfm-playcount
-    image: wisdomwolf/lastfm-playcount:v2
+    image: wisdomwolf/lastfm-playcount:v2.0.1
     secrets:
       - lastfm-api-secret
 

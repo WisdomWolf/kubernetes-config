@@ -42,7 +42,7 @@ spec:
           value: "1"
         - name: vip_address
           value: 192.168.2.2
-        image: plndr/kube-vip:0.2.3
+        image: plndr/kube-vip:0.3.0
         imagePullPolicy: Always
         name: kube-vip
         resources: {}
@@ -62,6 +62,151 @@ spec:
       - hostPath:
           path: /etc/ssl/certs
         name: ca-certs
+      - hostPath:
+          path: /etc/kubernetes/admin.conf
+        name: kubeconfig
+  updateStrategy: {}
+status:
+  currentNumberScheduled: 0
+  desiredNumberScheduled: 0
+  numberMisscheduled: 0
+  numberReady: 0
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  creationTimestamp: null
+  name: kube-vip-ds
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      name: kube-vip-ds
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        name: kube-vip-ds
+    spec:
+      containers:
+      - args:
+        - manager
+        env:
+        - name: vip_arp
+          value: "true"
+        - name: vip_interface
+          value: eth0
+        - name: port
+          value: "6443"
+        - name: vip_cidr
+          value: "32"
+        - name: cp_enable
+          value: "true"
+        - name: cp_namespace
+          value: kube-system
+        - name: svc_enable
+          value: "true"
+        - name: vip_leaderelection
+          value: "true"
+        - name: vip_leaseduration
+          value: "5"
+        - name: vip_renewdeadline
+          value: "3"
+        - name: vip_retryperiod
+          value: "1"
+        - name: vip_address
+          value: 192.168.2.2
+        image: plndr/kube-vip:0.3.0
+        imagePullPolicy: Always
+        name: kube-vip
+        resources: {}
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            - NET_RAW
+            - SYS_TIME
+        volumeMounts:
+        - mountPath: /etc/kubernetes/admin.conf
+          name: kubeconfig
+      hostNetwork: true
+      serviceAccountName: kube-vip
+      volumes:
+      - hostPath:
+          path: /etc/kubernetes/admin.conf
+        name: kubeconfig
+  updateStrategy: {}
+status:
+  currentNumberScheduled: 0
+  desiredNumberScheduled: 0
+  numberMisscheduled: 0
+  numberReady: 0
+
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  creationTimestamp: null
+  name: kube-vip-ds
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      name: kube-vip-ds
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        name: kube-vip-ds
+    spec:
+      containers:
+      - args:
+        - manager
+        env:
+        - name: vip_arp
+          value: "true"
+        - name: vip_interface
+          value: eth0
+        - name: port
+          value: "6443"
+        - name: vip_cidr
+          value: "32"
+        - name: cp_enable
+          value: "true"
+        - name: cp_namespace
+          value: kube-system
+        - name: svc_enable
+          value: "true"
+        - name: vip_leaderelection
+          value: "true"
+        - name: vip_leaseduration
+          value: "5"
+        - name: vip_renewdeadline
+          value: "3"
+        - name: vip_retryperiod
+          value: "1"
+        - name: vip_address
+          value: 192.168.2.2
+        image: plndr/kube-vip:0.3.0
+        imagePullPolicy: Always
+        name: kube-vip
+        resources: {}
+        securityContext:
+          capabilities:
+            add:
+            - NET_ADMIN
+            - NET_RAW
+            - SYS_TIME
+        volumeMounts:
+        - mountPath: /etc/kubernetes/admin.conf
+          name: kubeconfig
+      hostNetwork: true
+      nodeSelector:
+        node-role.kubernetes.io/master: "true"
+      serviceAccountName: kube-vip
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+      volumes:
       - hostPath:
           path: /etc/kubernetes/admin.conf
         name: kubeconfig

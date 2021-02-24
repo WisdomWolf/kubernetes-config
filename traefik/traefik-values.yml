@@ -11,7 +11,7 @@ additionalArguments:
   - "--api.dashboard=true"
 
 deployment:
-  replicas: 1
+  replicas: 2
   podAnnotations:
     prometheus.io/port: '8082'
     prometheus.io/scrape: 'true'

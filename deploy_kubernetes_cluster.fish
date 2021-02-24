@@ -1,6 +1,5 @@
 #!/usr/bin/env fish
 
-kubectl apply -R -f MetalLB/
 ./install-helm-packages.fish
 set faas_installed (which faas-cli)
 if test -z "$faas_installed"
@@ -14,4 +13,7 @@ if test -z "$ark_installed"
 else
     echo 'arkade is already installed...skipping'
 end
-ark install openfaas --load-balancer
+ark install openfaas
+#kubectl apply -R -f MetalLB/
+kubectl apply -f traefik/whoami-deployment.yml
+kubectl apply -f traefik/whoami-cert.yml

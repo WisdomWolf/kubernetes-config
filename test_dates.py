@@ -21,8 +21,15 @@ parser.add_argument('installed_ts')
 args = parser.parse_args()
 
 logger.debug(args)
-modified_timestamp = parse(args.modified_ts.strip('EST'))
-installed_timestamp = parse(args.installed_ts.strip('EST'))
+modified_timestamp = args.modified_ts.strip(' EST ')
+installed_timestamp = args.installed_ts.strip(' EST ')
+try:
+    modified_timestamp = parse(modified_timestamp)
+    installed_timestamp = parse(installed_timestamp)
+except ValueError:
+    logger.exception('Issues parsing dates')
+    logger.info(f'modified_timestamp: {args.modified_ts} | {modified_timestamp}')
+    logger.info(f'installed_timestamp: {args.installed_ts} | {installed_timestamp}')
 
 result = modified_timestamp > installed_timestamp
 if result:
