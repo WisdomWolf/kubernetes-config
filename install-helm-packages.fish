@@ -22,6 +22,13 @@ function upgrade_traefik
     helm upgrade -n traefik traefik traefik/traefik -f traefik/traefik-values.yml
 end
 
+helm repo add traefik https://containous.github.io/traefik-helm-chart
+helm repo add jetstack https://charts.jetstack.io
+helm repo add openfaas https://openfaas.github.io/faas-netes/
+helm repo add portainer https://portainer.github.io/k8s/
+helm repo add wise-charts https://wise-charts.developingwisdom.org
+helm repo update
+
 set installed_charts (helm list --all-namespaces | tail -n +2 | awk '{print $1}')
 
 ## PORTAINER
