@@ -60,10 +60,10 @@ else
       --version v1.1.0 \
       --set installCRDs=true \
       --set 'extraArgs={--dns01-recursive-nameservers-only,--dns01-recursive-nameservers=8.8.8.8:53\,1.1.1.1:53}'
-    kubectl apply -f cert-manager/letsencrypt-issuer-prod.yaml
-    kubectl apply -f cert-manager/letsencrypt-issuer-staging.yaml
     echo sleeping for 30 seconds...
     sleep 30
+    kubectl apply -f cert-manager/letsencrypt-issuer-prod.yaml
+    kubectl apply -f cert-manager/letsencrypt-issuer-staging.yaml
 end
 
 ## MISC CHARTS
