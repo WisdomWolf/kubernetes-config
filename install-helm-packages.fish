@@ -71,7 +71,7 @@ end
 for service_file in (ls helm_values/headless-service)
     # excluding sample.yaml
     if string match '*.yml' $service_file >> /dev/null
-        set service_name (string split '_' $service_file)[1]
+        set service_name (string split '_' $service_file)[1]"-headless"
         if contains $service_name $installed_charts
             # test to see if it was updated since install
             set modified_ts (stat -c%y helm_values/headless-service/$service_file)

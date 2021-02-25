@@ -15,5 +15,6 @@ else
 end
 ark install openfaas
 #kubectl apply -R -f MetalLB/
+kubectl apply -R -f kube-vip/
 kubectl apply -f traefik/whoami-deployment.yml
 kubectl apply -f traefik/whoami-cert.yml
