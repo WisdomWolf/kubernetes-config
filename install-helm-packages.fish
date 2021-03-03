@@ -30,6 +30,16 @@ helm repo update
 
 set installed_charts (helm list --all-namespaces | tail -n +2 | awk '{print $1}')
 
+## NFS PROVISIONER
+if contains nfs-subdir-external-provisioner $installed_charts
+    echo 'nfs-provisioner already installed...skipping'
+else
+    helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
+        --set nfs.server=192.168.1.18 \
+        --set nfs.path=/mnt/user/k8s-pv \
+        --set storageClass.defaultClass=true
+end
+
 ## PORTAINER
 if contains portainer $installed_charts
     echo 'portainer is already installed...skipping'
@@ -63,13 +73,6 @@ else
     kubectl apply -f cert-manager/letsencrypt-issuer-staging.yaml
 end
 
-if contains nfs-subdir-external-provisioner $installed_charts
-    echo 'nfs-provisioner already installed...skipping'
-else
-    helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
-        --set nfs.server=192.168.1.18 \
-        --set nfs.path=/mnt/user/k8s-pv
-end
 
 ## MISC CHARTS
 # Also need to update install to not rely on relative path for chart reference
