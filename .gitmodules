@@ -1,0 +1,3 @@
+[submodule "rkubelog"]
+	path = rkubelog
+	url = https://github.com/solarwinds/rkubelog.git

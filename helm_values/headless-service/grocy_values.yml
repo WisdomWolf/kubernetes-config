@@ -1,5 +1,5 @@
 ---
-domainName: wiseapp.xyz
+hostName: grocy.wiseapp.xyz
 service:
   ipAddress: 192.168.1.18
   port: 9283

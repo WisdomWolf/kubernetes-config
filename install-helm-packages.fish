@@ -13,8 +13,7 @@ end
 
 function install_traefik
     echo 'installing traefik'
-    kubectl create namespace traefik
-    helm install -n traefik traefik traefik/traefik -f traefik/traefik-values.yml
+    helm install --create-namespace -n traefik traefik traefik/traefik -f traefik/traefik-values.yml
 end
 
 function upgrade_traefik
@@ -37,8 +36,7 @@ if contains portainer $installed_charts
 
 else
     echo 'intalling portainer'
-    kubectl create namespace portainer
-    helm install -n portainer portainer portainer/portainer --set service.type=ClusterIP
+    helm install --create-namespace -n portainer portainer portainer/portainer --set service.type=ClusterIP
 end
 
 ## TRAEFIK
@@ -54,8 +52,7 @@ if contains cert-manager $installed_charts
     echo 'cert-manager is already install...skipping'
 else
     echo 'installing cert-manager'
-    kubectl create namespace cert-manager
-    helm install cert-manager jetstack/cert-manager \
+    helm install --create-namespace cert-manager jetstack/cert-manager \
       --namespace cert-manager \
       --version v1.1.0 \
       --set installCRDs=true \

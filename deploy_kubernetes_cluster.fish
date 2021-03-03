@@ -14,7 +14,11 @@ else
     echo 'arkade is already installed...skipping'
 end
 ark install openfaas
-#kubectl apply -R -f MetalLB/
-kubectl apply -R -f kube-vip/
+#kubectl apply -R -f kube-vip/
+kubectl apply -f traefik/portainer-cert.yml -f traefik/portainer-ingress.yml
 kubectl apply -f traefik/whoami-deployment.yml
 kubectl apply -f traefik/whoami-cert.yml
+kubectl apply -f papertrail/rkubelog-secret.yml
+kubectl apply -k rkubelog
+kubectl apply -f openfaas/faas-profile-noarm.yaml
+kubectl apply -f openfaas/lastfm-api-secret.yaml
