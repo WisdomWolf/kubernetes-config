@@ -1,7 +1,7 @@
 ---
 apiVersion: v1
 data:
-  cidr-global: 192.168.30.2/32
+  cidr-global: 192.168.30.3/32
 kind: ConfigMap
 metadata:
   name: plndr
