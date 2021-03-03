@@ -22,3 +22,4 @@ kubectl apply -f papertrail/rkubelog-secret.yml
 kubectl apply -k rkubelog
 kubectl apply -f openfaas/faas-profile-noarm.yaml
 kubectl apply -f openfaas/lastfm-api-secret.yaml
+kubectl apply -f openfaas/ingressroute.yml
