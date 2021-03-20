@@ -26,18 +26,29 @@ helm repo add jetstack https://charts.jetstack.io
 helm repo add openfaas https://openfaas.github.io/faas-netes/
 helm repo add portainer https://portainer.github.io/k8s/
 helm repo add wise-charts https://wise-charts.developingwisdom.org
+helm repo add longhorn https://charts.longhorn.io
 helm repo update
 
 set installed_charts (helm list --all-namespaces | tail -n +2 | awk '{print $1}')
 
 ## NFS PROVISIONER
-if contains nfs-subdir-external-provisioner $installed_charts
-    echo 'nfs-provisioner already installed...skipping'
+#if contains nfs-subdir-external-provisioner $installed_charts
+#    echo 'nfs-provisioner already installed...skipping'
+#else
+#    helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
+#        --set nfs.server=192.168.1.18 \
+#        --set nfs.path=/mnt/user/k8s-pv \
+#        --set storageClass.defaultClass=true
+#end
+
+## LONGHORN
+if contains longhorn $installed_charts
+    echo 'longhorn already installed...skipping'
 else
-    helm install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
-        --set nfs.server=192.168.1.18 \
-        --set nfs.path=/mnt/user/k8s-pv \
-        --set storageClass.defaultClass=true
+    echo 'installing longhorn'
+    helm install --create-namespace longhorn longhorn/longhorn \
+      --namespace longhorn-system \
+      --set defaultSettings.backupTarget='nfs://192.168.1.17:/longhorn'
 end
 
 ## PORTAINER
@@ -45,7 +56,7 @@ if contains portainer $installed_charts
     echo 'portainer is already installed...skipping'
 
 else
-    echo 'intalling portainer'
+    echo 'installing portainer'
     helm install --create-namespace -n portainer portainer portainer/portainer --set service.type=ClusterIP
 end
 

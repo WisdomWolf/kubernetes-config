@@ -15,9 +15,7 @@ else
 end
 ark install openfaas
 #kubectl apply -R -f kube-vip/
-kubectl apply -f traefik/portainer-cert.yml -f traefik/portainer-ingress.yml
-kubectl apply -f traefik/whoami-deployment.yml
-kubectl apply -f traefik/whoami-cert.yml
+kubectl apply -R -f traefik/ingress-configs/
 kubectl apply -f papertrail/rkubelog-secret.yml
 kubectl apply -k rkubelog
 kubectl apply -f openfaas/faas-profile-noarm.yaml

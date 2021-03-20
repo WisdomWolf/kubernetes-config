@@ -22,7 +22,7 @@ args = parser.parse_args()
 
 logger.debug(args)
 modified_timestamp = args.modified_ts.strip(' EST ')
-installed_timestamp = args.installed_ts.strip(' EST ')
+installed_timestamp = args.installed_ts.strip(' EST ').strip(' EDT ')
 try:
     modified_timestamp = parse(modified_timestamp)
     installed_timestamp = parse(installed_timestamp)
