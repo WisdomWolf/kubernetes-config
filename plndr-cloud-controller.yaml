@@ -51,6 +51,9 @@ spec:
     imagePullPolicy: Always
     resources: {}
   serviceAccountName: plunder-cloud-controller
+  tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
 ---
 apiVersion: v1
 data:
