@@ -15,6 +15,8 @@ else
 end
 ark install openfaas
 #kubectl apply -R -f kube-vip/
+kubectl apply -f cert-manager/letsencrypt-issuer-prod.yaml
+kubectl apply -f cert-manager/letsencrypt-issuer-staging.yaml
 kubectl apply -R -f traefik/ingress-configs/
 kubectl apply -f papertrail/rkubelog-secret.yml
 kubectl apply -k rkubelog

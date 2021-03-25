@@ -27,6 +27,7 @@ helm repo add openfaas https://openfaas.github.io/faas-netes/
 helm repo add portainer https://portainer.github.io/k8s/
 helm repo add wise-charts https://wise-charts.developingwisdom.org
 helm repo add longhorn https://charts.longhorn.io
+helm repo add jupyterhub https://jupyterhub.github.io/helm-chart/
 helm repo update
 
 set installed_charts (helm list --all-namespaces | tail -n +2 | awk '{print $1}')
@@ -80,8 +81,6 @@ else
       --set 'extraArgs={--dns01-recursive-nameservers-only,--dns01-recursive-nameservers=8.8.8.8:53\,1.1.1.1:53}'
     echo sleeping for 30 seconds...
     sleep 30
-    kubectl apply -f cert-manager/letsencrypt-issuer-prod.yaml
-    kubectl apply -f cert-manager/letsencrypt-issuer-staging.yaml
 end
 
 
