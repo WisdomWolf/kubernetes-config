@@ -58,7 +58,10 @@ if contains portainer $installed_charts
 
 else
     echo 'installing portainer'
-    helm install --create-namespace -n portainer portainer portainer/portainer --set service.type=ClusterIP
+    helm install --create-namespace portainer portainer/portainer \
+        --namespace portainer \
+        --set service.type=ClusterIP \
+        --set persistence.existingClaim='data-portainer-0'
 end
 
 ## TRAEFIK
